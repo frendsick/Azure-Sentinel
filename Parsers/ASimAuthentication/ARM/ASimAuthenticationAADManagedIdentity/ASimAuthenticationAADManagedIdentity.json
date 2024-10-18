@@ -1,6 +1,5 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
-  "languageVersion": "2.0",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "Workspace": {
@@ -17,17 +16,12 @@
       }
     }
   },
-  "resources": {
-    "log_analytics_workspace": {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2017-03-15-preview",
-      "name": "[parameters('Workspace')]",
-      "existing": true
-    },
-    "saved_search": {
+  "resources": [
+    {
       "type": "Microsoft.OperationalInsights/workspaces/savedSearches",
       "apiVersion": "2020-08-01",
       "name": "[concat(parameters('Workspace'), '/ASimAuthenticationAADManagedIdentitySignInLogs')]",
+      "location": "[parameters('WorkspaceRegion')]",
       "properties": {
         "etag": "*",
         "displayName": "Authentication ASIM parser for Microsoft Entra ID managed identity sign-in logs",
@@ -38,5 +32,5 @@
         "functionParameters": "disabled:bool=False"
       }
     }
-  }
+  ]
 }
